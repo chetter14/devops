@@ -30,4 +30,8 @@ jobs:
 
       - name: Build backend
         working-directory: ./lab1/backend
-        run: mvn clean install
+        run: mvn clean package -DskipTests
+
+      - name: Test backend
+        working-directory: ./lab1/backend
+        run: mvn test

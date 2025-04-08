@@ -30,4 +30,4 @@ jobs:
 
       - name: Build backend
         working-directory: ./lab1/backend
-        run: ./mvnw clean install
+        run: mvn clean install

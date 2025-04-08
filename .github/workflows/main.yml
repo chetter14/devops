@@ -29,5 +29,5 @@ jobs:
           java-version: '17'
 
       - name: Build backend
-        working-directory: ./backend
+        working-directory: ./lab1/backend
         run: ./mvnw clean install

@@ -21,3 +21,13 @@ jobs:
         run: |
           pwd 
           docker compose -f lab1/docker-compose.yml up -d
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Build backend
+        working-directory: ./backend
+        run: ./mvnw clean install

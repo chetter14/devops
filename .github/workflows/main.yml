@@ -20,4 +20,4 @@ jobs:
       - name: Start PostgreSQL with Docker Compose
         run: |
           pwd 
-          docker compose up -d
+          docker compose -f lab1/docker-compose.yml up -d

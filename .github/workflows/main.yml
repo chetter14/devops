@@ -39,6 +39,10 @@ jobs:
         working-directory: ./lab1/frontend
         run: npm install
 
+      - name: Run frontend
+        working-directory: ./lab1/frontend
+        run: npm start
+
       - name: Test backend
         working-directory: ./lab1/backend
         run: mvn test

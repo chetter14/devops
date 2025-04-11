@@ -7,15 +7,43 @@ on:
     branches: [main]
 
 jobs:
-  build-test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Docker Compose
-        run: docker compose --version
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Build backend
+        working-directory: ./lab1/backend
+        run: mvn clean package -DskipTests
+
+      - name: Set up Node JS
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install frontend dependencies
+        working-directory: ./lab1/frontend
+        run: npm install
+
+      - name: Build frontend
+        working-directory: ./lab1/frontend
+        run: npm run build
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Start PostgreSQL with Docker Compose
         run: docker compose -f lab1/docker-compose.yml up -d

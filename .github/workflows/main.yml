@@ -74,3 +74,7 @@ jobs:
       - name: Test backend
         working-directory: ./lab1/backend
         run: mvn test
+
+      - name: Test frontend
+        working-directory: ./lab1/frontend
+        run: npm test -- --watchAll=false

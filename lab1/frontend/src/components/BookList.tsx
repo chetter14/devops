@@ -25,10 +25,10 @@ const BookList: React.FC<BookListProps> = ({ onEdit }) => {
 
     return (
         <div>
-            <h2>Book List</h2>
+            <h2>Books</h2>
             {books.map(book => (
                 <BookItem
-                    key={book.id}
+                    key={`book-${book.id}`}
                     book={book}
                     onDelete={handleDelete}
                     onEdit={onEdit}

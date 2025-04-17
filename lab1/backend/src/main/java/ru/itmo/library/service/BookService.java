@@ -18,7 +18,6 @@ public class BookService {
         this.bookRepository = bookRepository;
     }
 
-    @Transactional
     public Book add(Book book) {
         book.setId(null);
         return bookRepository.save(book);

@@ -1,6 +1,30 @@
 version: '3.9'
 
 services:
+  frontend:
+    image: pavelverbov/itmo-devops-library-frontend-vl:latest
+    container_name: itmo-devops-library-frontend-vl-container
+    environment:
+      REACT_APP_API_HOST: backend
+    ports:
+      - "3000:3000"
+    expose:
+      - 80
+    depends_on:
+      - backend
+    networks:
+      - devops_network
+  backend:
+    image: pavelverbov/itmo-devops-library-backend-vl:latest
+    container_name: itmo-devops-library-backend-vl-container
+    environment:
+      DB_HOST: postgres
+    expose:
+      - 8080
+    depends_on:
+      - postgres
+    networks:
+      - devops_network
   postgres:
     image: postgres:latest
     container_name: postgres_container
@@ -37,7 +61,13 @@ services:
     restart: unless-stopped
     tty: true
     stdin_open: true
+    networks:
+      - devops_network
 
 volumes:
   pgdata:
     driver: local
+
+networks:
+  devops_network:
+    driver: bridge

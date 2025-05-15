@@ -1,6 +1,7 @@
 import { Book } from "../models/Book";
 
-const API_URL = 'http://localhost:8080/api/books';
+// const API_URL = 'http://' + process.env.REACT_APP_API_HOST + ':8080/api/books';
+const API_URL = '/api/books';
 
 export const getBooks = async (): Promise<Book[]> => {
     const response = await fetch(API_URL);

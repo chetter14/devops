@@ -45,7 +45,7 @@ variable "memory" {
 
 variable "disk_size" {
   type    = number
-  default = 50
+  default = 35
 }
 
 variable "disk_type" {

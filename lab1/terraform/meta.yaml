@@ -1,0 +1,25 @@
+#cloud-config
+users:
+  - name: ${vm_user}
+    groups: sudo
+    shell: /bin/bash
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']
+    ssh_authorized_keys:
+      - ${ssh_public_key}
+
+write_files:
+  - path: "/usr/local/etc/init.sh"
+    permissions: "755"
+    content: |
+      #!/bin/bash
+
+      echo "Installing Docker"
+      sudo apt update -y && sudo apt install docker.io -y
+      echo "Grant user access to Docker"
+      sudo usermod -aG docker ${vm_user}
+      newgrp docker
+      echo "Installing Docker compose"
+      sudo apt install docker-compose -y
+    defer: true
+runcmd:
+  - [su, ubuntu, -c, "/usr/local/etc/init.sh"]

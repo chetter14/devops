@@ -66,7 +66,10 @@ resource "yandex_compute_instance" "vm" {
 
   metadata = {
     user-data = data.template_file.default.rendered
-    ssh-keys  = "${var.vm_user}:${file(var.ssh_key_path)}"
+    ssh-keys  = <<-EOT
+		ubuntu:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILv3myr1jU9B/rEvLPAxsvOGm1QTEz0mdHic7FhqEr6K pavel@debian-laptop
+		ubuntu:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEf2tSZ8i9kZvwM3On8neMlB+jJy8yU34s3yF+BSGP71 user@WINDOWS-QFD8JJ4
+	EOT
   }
 
   timeouts {

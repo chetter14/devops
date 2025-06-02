@@ -1,0 +1,79 @@
+# ----- Initialization part, done once:
+
+# Install k3s
+curl -sfL https://get.k3s.io | sh -
+
+# Handle config a bit
+export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+
+# Check that it works
+sudo kubectl get nodes
+
+# Install Kompose
+sudo snap install kompose
+
+# Convert docker-compose (check version in .yml)
+sudo kompose convert -f docker-compose.yml
+
+# Add 
+# ```
+# 	spec:
+#  		type: NodePort
+# ```
+# in frontend-service.yaml to be able to access front
+
+# Apply to Kubernetes
+sudo kubectl apply -f .
+
+# Check everything 
+sudo kubectl get pods
+sudo kubectl get svc
+
+# ----- REGULARLY:
+
+# Launch pods 
+sudo kubectl scale deployment frontend --replicas=1
+sudo kubectl scale deployment backend --replicas=1
+sudo kubectl scale deployment postgres --replicas=1
+
+# Stop them
+sudo kubectl scale deployment frontend --replicas=0
+sudo kubectl scale deployment backend --replicas=0
+sudo kubectl scale deployment postgres --replicas=0
+
+# Check scaling and pods in real time
+sudo watch -n 1 'kubectl top pods
+kubectl get pods
+kubectl get hpa'
+
+# ----- SET UP METRICS SERVER AND HORIZONTAL SCALING:
+
+# Edit `Deployment` with requests and limits and reapply it
+# resources:
+#   requests:
+#     cpu: "100m"
+#   limits:
+#     cpu: "500m"
+
+# Create `yaml` with Horizontal Pod Autoscaler and apply it
+
+# Apply Metrics Server
+sudo kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+
+# Check that it works
+sudo kubectl get deployment metrics-server -n kube-system
+
+# Fix it a bit
+sudo kubectl edit deployment metrics-server -n kube-system
+# Add `--kubelet-insecure-tls` in container `metrics-server` `args`
+
+# Reinstall it
+sudo kubectl delete -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+sudo kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+
+# After a minute wait and run to check
+sudo kubectl top nodes
+sudo kubectl top pods
+
+# Also you can check how HPA works
+sudo kubectl get hpa

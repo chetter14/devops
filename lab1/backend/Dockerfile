@@ -1,7 +1,7 @@
-FROM openjdk:23-slim AS builder
+FROM maven:3.9.6-eclipse-temurin-23 AS builder
 WORKDIR /app
 COPY . .
-RUN ./mvnw package -DskipTests
+RUN mvn package -DskipTests
 
 FROM openjdk:23-slim
 WORKDIR /app

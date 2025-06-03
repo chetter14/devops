@@ -44,6 +44,12 @@ data "yandex_compute_image" "image" {
   family = var.image_family
 }
 
+# To get this service account API key - 'yc iam api-key list --service-account-id ajebdcqhtq1cpl5ofhrf'
+resource "yandex_iam_service_account_api_key" "sa-api-key" {
+  service_account_id = "ajebdcqhtq1cpl5ofhrf"
+  description        = "API key for service account"
+}
+
 resource "yandex_compute_instance" "vm" {
   name        = var.name
   hostname    = var.name

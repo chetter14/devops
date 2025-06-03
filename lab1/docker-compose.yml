@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   frontend:
-    image: pavelverbov/itmo-devops-library-frontend-vl:latest
+    image: timur43/itmo-devops-library-frontend-vl:latest
     container_name: itmo-devops-library-frontend-vl-container
     environment:
       REACT_APP_API_HOST: backend
@@ -15,7 +15,7 @@ services:
     networks:
       - devops_network
   backend:
-    image: pavelverbov/itmo-devops-library-backend-vl:latest
+    image: timur43/itmo-devops-library-backend-vl:latest
     container_name: itmo-devops-library-backend-vl-container
     environment:
       DB_HOST: postgres
@@ -25,6 +25,14 @@ services:
       - postgres
     networks:
       - devops_network
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    depends_on:
+      - backend
   postgres:
     image: postgres:latest
     container_name: postgres_container

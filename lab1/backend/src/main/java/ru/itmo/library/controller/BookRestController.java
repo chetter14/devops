@@ -26,7 +26,7 @@ public class BookRestController {
 
     @PostConstruct
     public void init() {
-        this.allBooksRequestCounter = Counter.builder("api.library.requests")
+        this.allBooksRequestCounter = Counter.builder("all_books_requests")
                 .description("Total requests to all books")
                 .tag("controller", "BookRestController")
                 .register(registry);

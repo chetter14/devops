@@ -12,8 +12,10 @@ sudo kubectl get nodes
 # Install Kompose
 sudo snap install kompose
 
-# Convert docker-compose (check version in .yml)
-sudo kompose convert -f docker-compose.yml
+# Transfer docker-compose.yml to cloud VM
+
+# Convert docker-compose (check version in .yml, convert to 3.7)
+kompose convert -f docker-compose.yml
 
 # Add 
 # ```
@@ -21,6 +23,14 @@ sudo kompose convert -f docker-compose.yml
 #  		type: NodePort
 # ```
 # in frontend-service.yaml to be able to access front
+
+# Add "imagePullPolicy: Always" in all .yaml deployment files of services
+#    containers:
+#      - name: backend
+#        image: your-dockerhub-username/backend:latest
+#    !!! imagePullPolicy: Always !!!
+
+# Transfer prometheus-deployment.yaml, prometheus-config.yaml and prometheus-service.yaml
 
 # Apply to Kubernetes
 sudo kubectl apply -f .
@@ -35,11 +45,16 @@ sudo kubectl get svc
 sudo kubectl scale deployment frontend --replicas=1
 sudo kubectl scale deployment backend --replicas=1
 sudo kubectl scale deployment postgres --replicas=1
+sudo kubectl scale deployment prometheus --replicas=1
 
 # Stop them
 sudo kubectl scale deployment frontend --replicas=0
 sudo kubectl scale deployment backend --replicas=0
 sudo kubectl scale deployment postgres --replicas=0
+sudo kubectl scale deployment prometheus --replicas=0
+
+# Delete all the deployments
+sudo kubectl delete deployments --all
 
 # Check scaling and pods in real time
 sudo watch -n 1 'kubectl top pods
@@ -51,9 +66,9 @@ kubectl get hpa'
 # Edit `Deployment` with requests and limits and reapply it
 # resources:
 #   requests:
-#     cpu: "100m"
+#     cpu: "200m"
 #   limits:
-#     cpu: "500m"
+#     cpu: "600m"
 
 # Create `yaml` with Horizontal Pod Autoscaler and apply it
 

@@ -6,8 +6,6 @@ import ru.itmo.library.exception.BookNotFoundException;
 import ru.itmo.library.model.Book;
 import ru.itmo.library.repository.BookRepository;
 
-import io.prometheus.client.Counter;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -47,14 +45,8 @@ public class BookService {
         return bookRepository.save(updatedBook);
     }
 
-    static final Counter requests = Counter.build()
-            .name("all_book_requests")
-            .help("Total number of requests of all books.")
-            .register();
-
     @Transactional(readOnly = true)
     public List<Book> getBooks() {
-        requests.inc();
         return bookRepository.findAll();
     }
 

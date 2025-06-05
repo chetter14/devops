@@ -1,10 +1,15 @@
 package ru.itmo.library.controller;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.itmo.library.model.Book;
+import ru.itmo.library.repository.BookRepository;
 import ru.itmo.library.service.BookService;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 
 import java.util.List;
 
@@ -14,12 +19,25 @@ public class BookRestController {
 
     private final BookService bookService;
 
+    @Autowired
+    private MeterRegistry registry;
+
+    private Counter allBooksRequestCounter;
+
+    @PostConstruct
+    public void init() {
+        this.allBooksRequestCounter = Counter.builder("api.library.requests")
+                .description("Total requests to all books")
+                .register(registry);
+    }
+
     public BookRestController(BookService bookService) {
         this.bookService = bookService;
     }
 
     @GetMapping
     public List<Book> getBooks() {
+        allBooksRequestCounter.increment();
         return bookService.getBooks();
     }
 

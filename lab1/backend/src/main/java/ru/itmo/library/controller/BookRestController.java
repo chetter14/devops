@@ -28,6 +28,7 @@ public class BookRestController {
     public void init() {
         this.allBooksRequestCounter = Counter.builder("api.library.requests")
                 .description("Total requests to all books")
+                .tag("controller", "BookRestController")
                 .register(registry);
     }
 

@@ -108,7 +108,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           mvn verify sonar:sonar \
-            -Dsonar.projectKey=chetter14 \
-            -Dsonar.organization=Artem Leshchukov \
+            -Dsonar.projectKey=chetter14_devops \
+            -Dsonar.organization=chetter14 \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.login=$SONAR_TOKEN

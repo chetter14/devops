@@ -102,7 +102,7 @@ jobs:
         working-directory: ./lab1/backend
         run: mvn clean verify
 
-      - name: SonarCloud Scan
+      - name: Backend SonarCloud Scan
         working-directory: ./lab1/backend
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -111,4 +111,9 @@ jobs:
             -Dsonar.projectKey=chetter14_devops \
             -Dsonar.organization=chetter14 \
             -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.login=$SONAR_TOKEN
+            -Dsonar.token=$SONAR_TOKEN
+
+      - name: Frontend SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

@@ -60,7 +60,7 @@ jobs:
   push_to_registry:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
-    needs: build
+    needs: sonar_qube
     permissions:
       packages: write
       contents: read
@@ -89,3 +89,24 @@ jobs:
           context: ./lab1/frontend
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/itmo-devops-library-frontend-vl:latest
+
+  sonar_qube:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Build with Maven
+        run: mvn clean verify
+
+      - name: SonarCloud Scan
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          mvn verify sonar:sonar \
+            -Dsonar.projectKey=chetter14 \
+            -Dsonar.organization=Artem Leshchukov \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=$SONAR_TOKEN

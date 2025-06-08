@@ -115,7 +115,5 @@ jobs:
 
       - name: Frontend SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
-        with:
-          projectBaseDir: ./lab1/frontend
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

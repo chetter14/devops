@@ -53,9 +53,9 @@ jobs:
         working-directory: ./lab1/frontend
         run: npm install
 
-      - name: Test frontend
+      - name: Test frontend with coverage
         working-directory: ./lab1/frontend
-        run: npm test -- --watchAll=false
+        run: npm test -- --watchAll=false --coverage --coverageReporters=lcov
     
   push_to_registry:
     name: Push Docker image to Docker Hub
@@ -112,6 +112,7 @@ jobs:
             -Dsonar.organization=chetter14 \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.token=$SONAR_TOKEN
+            -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
 
       - name: Frontend SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5

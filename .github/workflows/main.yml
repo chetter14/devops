@@ -63,7 +63,7 @@ jobs:
         with:
           name: backend-coverage
           path: lab1/backend/target/site/jacoco/jacoco.xml
-
+      
       - name: Upload Frontend Coverage
         if: always()
         uses: actions/upload-artifact@v4

@@ -112,9 +112,10 @@ jobs:
             -Dsonar.organization=chetter14 \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.token=$SONAR_TOKEN
-            -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
 
       - name: Frontend SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
+        with:
+          projectBaseDir: ./lab1/frontend
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

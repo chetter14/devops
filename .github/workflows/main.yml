@@ -56,13 +56,6 @@ jobs:
       - name: Test frontend with coverage
         working-directory: ./lab1/frontend
         run: npm test -- --watchAll=false --coverage --coverageReporters=lcov
-
-      - name: Upload Backend Coverage
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: backend-coverage
-          path: lab1/backend/target/site/jacoco/jacoco.xml
       
       - name: Upload Frontend Coverage
         if: always()
@@ -111,12 +104,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
-      - name: Download backend coverage
-        uses: actions/download-artifact@v4
-        with:
-          name: backend-coverage
-          path: lab1/backend/target/site/jacoco
       
       - name: Download frontend coverage
         uses: actions/download-artifact@v4

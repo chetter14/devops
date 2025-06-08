@@ -57,6 +57,10 @@ jobs:
         working-directory: ./lab1/frontend
         run: npm test -- --watchAll=false --coverage --coverageReporters=lcov
       
+      - name: Debug lcov.info
+        run: cat coverage/lcov.info | head -n 20
+        working-directory: ./lab1/frontend
+      
       - name: Upload Frontend Coverage
         if: always()
         uses: actions/upload-artifact@v4
@@ -129,5 +133,7 @@ jobs:
 
       - name: Frontend SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
+        with:
+          projectBaseDir: ./lab1/frontend
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

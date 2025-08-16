@@ -20,12 +20,6 @@ public class BookRestController {
 
     private final BookService bookService;
 
-    /*
-    1) Добавить счётчик (Counter) на каждую ручку
-    2) Добавить таймер (Timed/Timer) на каждую ручку
-    3) Добавить отдельный класс (MetricsConfig) для сбора метрик машины
-     */
-
     @Autowired
     private MeterRegistry registry;
 

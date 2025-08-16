@@ -67,9 +67,9 @@ kubectl get hpa'
 # Edit `Deployment` with requests and limits and reapply it
 # resources:
 #   requests:
-#     cpu: "1000m"
+#     cpu: "500m"
 #   limits:
-#     cpu: "1000m"
+#     cpu: "500m"
 
 # Create `yaml` with Horizontal Pod Autoscaler and apply it
 

@@ -28,27 +28,27 @@ public class BookRestController {
 
     @PostConstruct
     public void init() {
-        this.books_requests_all = Counter.builder("books.requests")
+        this.books_requests_all = Counter.builder("books_requests")
                 .tag("operation", "get_all")
                 .description("Total requests to get all books")
                 .register(registry);
 
-        this.books_requests_by_id = Counter.builder("books.requests")
+        this.books_requests_by_id = Counter.builder("books_requests")
                 .tag("operation", "get_by_id")
                 .description("Total requests to get a book by id")
                 .register(registry);
 
-        this.books_requests_create = Counter.builder("books.requests")
+        this.books_requests_create = Counter.builder("books_requests")
                 .tag("operation", "create")
                 .description("Total requests to create a book")
                 .register(registry);
 
-        this.books_requests_update = Counter.builder("books.requests")
+        this.books_requests_update = Counter.builder("books_requests")
                 .tag("operation", "update")
                 .description("Total requests to update a book")
                 .register(registry);
 
-        this.books_requests_delete = Counter.builder("books.requests")
+        this.books_requests_delete = Counter.builder("books_requests")
                 .tag("operation", "delete")
                 .description("Total requests to delete a book")
                 .register(registry);

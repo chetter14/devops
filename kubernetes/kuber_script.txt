@@ -57,7 +57,8 @@ sudo kubectl scale deployment prometheus --replicas=0
 sudo kubectl delete deployments --all
 
 # Check scaling and pods in real time
-sudo watch -n 1 'kubectl top pods
+sudo watch -n 1 \
+'kubectl top pods
 kubectl get pods
 kubectl get hpa'
 
@@ -66,9 +67,9 @@ kubectl get hpa'
 # Edit `Deployment` with requests and limits and reapply it
 # resources:
 #   requests:
-#     cpu: "200m"
+#     cpu: "1000m"
 #   limits:
-#     cpu: "600m"
+#     cpu: "1000m"
 
 # Create `yaml` with Horizontal Pod Autoscaler and apply it
 

@@ -1,5 +1,6 @@
 package ru.itmo.library.controller;
 
+import io.micrometer.core.annotation.Timed;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,16 +20,43 @@ public class BookRestController {
 
     private final BookService bookService;
 
+    /*
+    1) Добавить счётчик (Counter) на каждую ручку
+    2) Добавить таймер (Timed/Timer) на каждую ручку
+    3) Добавить отдельный класс (MetricsConfig) для сбора метрик машины
+     */
+
     @Autowired
     private MeterRegistry registry;
 
-    private Counter allBooksRequestCounter;
+    private Counter books_requests_all, books_requests_by_id, books_requests_create,
+            books_requests_update, books_requests_delete;
 
     @PostConstruct
     public void init() {
-        this.allBooksRequestCounter = Counter.builder("all_books_requests")
-                .description("Total requests to all books")
-                .tag("controller", "BookRestController")
+        this.books_requests_all = Counter.builder("books.requests")
+                .tag("operation", "get_all")
+                .description("Total requests to get all books")
+                .register(registry);
+
+        this.books_requests_by_id = Counter.builder("books.requests")
+                .tag("operation", "get_by_id")
+                .description("Total requests to get a book by id")
+                .register(registry);
+
+        this.books_requests_create = Counter.builder("books.requests")
+                .tag("operation", "create")
+                .description("Total requests to create a book")
+                .register(registry);
+
+        this.books_requests_update = Counter.builder("books.requests")
+                .tag("operation", "update")
+                .description("Total requests to update a book")
+                .register(registry);
+
+        this.books_requests_delete = Counter.builder("books.requests")
+                .tag("operation", "delete")
+                .description("Total requests to delete a book")
                 .register(registry);
     }
 
@@ -36,32 +64,40 @@ public class BookRestController {
         this.bookService = bookService;
     }
 
+    @Timed(value = "books_get_all_duration", description = "Time taken to get all books")
     @GetMapping
     public List<Book> getBooks() {
-        allBooksRequestCounter.increment();
+        books_requests_all.increment();
         return bookService.getBooks();
     }
 
+    @Timed(value = "books_get_by_id_duration", description = "Time taken to get a book")
     @GetMapping("/{id}")
     public Book getBookById(@PathVariable Long id) {
+        books_requests_by_id.increment();
         return bookService.getBookById(id);
-
     }
 
+    @Timed(value = "books_create_duration", description = "Time taken to create a book")
     @PostMapping
     public Book createBook(@RequestBody @Valid Book book) {
+        books_requests_create.increment();
         return bookService.add(book);
     }
 
+    @Timed(value = "books_update_duration", description = "Time taken to update a book")
     @PutMapping("/{id}")
     public Book updateBook(@PathVariable Long id, @RequestBody @Valid Book book) {
+        books_requests_update.increment();
         book.setId(id);
         return bookService.update(book);
     }
 
+    @Timed(value = "books_delete_duration", description = "Time taken to delete a book")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteBook(@PathVariable Long id) {
+        books_requests_delete.increment();
         bookService.delete(id);
     }
 }

@@ -28,8 +28,10 @@ public class BookRestController {
 
     @PostConstruct
     public void init() {
+        String podName = System.getenv("POD_NAME");
         this.books_requests_all = Counter.builder("books_requests")
                 .tag("operation", "get_all")
+                .tag("pod", podName != null ? podName : "unknown")
                 .description("Total requests to get all books")
                 .register(registry);
 

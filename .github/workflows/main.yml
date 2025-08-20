@@ -1,4 +1,4 @@
-name: CI Pipeline
+name: CI/CD Pipeline
 
 on:
   push:
@@ -153,4 +153,28 @@ jobs:
             -Dsonar.login=$SONAR_TOKEN \
             -Dsonar.qualitygate.wait=true
 
+  deploy:
+    needs: sonar_qube
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create separate directory
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.YC_VM_IP }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd ~
+            mkdir app_deploy
+
+      - name: Copy files via SCP
+        uses: appleboy/scp-action@v0.1.3
+        with:
+          host: ${{ secrets.YC_VM_IP }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "kubernetes/configs/*"
+          target: "~/app_deploy"
         

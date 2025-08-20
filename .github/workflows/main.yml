@@ -156,6 +156,8 @@ jobs:
   deploy:
     needs: push_to_registry
     runs-on: ubuntu-latest
+    env:
+      YC_PROM_KEY: ${{ secrets.YC_PROM_KEY }}
     steps:
       - uses: actions/checkout@v4
 

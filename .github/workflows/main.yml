@@ -187,6 +187,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd ~/app_deploy
+            sudo kubectl delete deployments --all
             sudo kubectl apply -f .
             sudo kubectl scale deployment frontend --replicas=1
             sudo kubectl scale deployment backend --replicas=1

@@ -15,7 +15,7 @@ data:
 
     remote_write:
       - url: 'https://monitoring.api.cloud.yandex.net/prometheus/workspaces/mon4qajkk17258krfi6g/api/v1/write'
-        bearer_token: 'AQVNzy8SCKtA4wvSrz94Pq67cRrpCVozhTwkrVbh'
+        bearer_token: '${YC_PROM_KEY}'
         queue_config:
           max_samples_per_send: 2000
           min_backoff: 100ms

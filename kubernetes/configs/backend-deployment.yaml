@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: /snap/kompose/19/kompose-linux-amd64 convert -f docker-compose.yml
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: backend
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: backend
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: /snap/kompose/19/kompose-linux-amd64 convert -f docker-compose.yml
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/devops_network: "true"
+        io.kompose.service: backend
+    spec:
+      containers:
+      - env:
+        - name: DB_HOST
+          value: postgres
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        image: timur43/itmo-devops-library-backend-vl:latest
+        imagePullPolicy: Always
+        name: itmo-devops-library-backend-vl-container
+        ports:
+        - containerPort: 8080
+        resources:
+          requests:
+            cpu: "500m"
+          limits:
+            cpu: "500m"
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes: null
+status: {}

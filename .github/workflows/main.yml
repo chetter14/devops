@@ -192,6 +192,7 @@ jobs:
             sudo kubectl apply -f .
             sudo -E envsubst < ./prometheus-config.yaml
             sudo -E envsubst < ./prometheus-config.yaml | sudo kubectl apply -f -
+            sudo kubectl rollout restart deployment prometheus
             # Apply Metrics Server
             sudo kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
             sudo kubectl scale deployment frontend --replicas=1

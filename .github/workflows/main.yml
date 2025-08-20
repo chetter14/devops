@@ -156,8 +156,6 @@ jobs:
   deploy:
     needs: push_to_registry
     runs-on: ubuntu-latest
-    env:
-      YC_PROM_KEY: ${{ secrets.YC_PROM_KEY }}
     steps:
       - uses: actions/checkout@v4
 
@@ -187,9 +185,9 @@ jobs:
           host: ${{ secrets.YC_VM_IP }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          envs: YC_PROM_KEY=${{ secrets.YC_PROM_KEY }}
           script: |
             cd ~/app_deploy/kubernetes/configs
+            export YC_PROM_KEY="${{ secrets.YC_PROM_KEY }}"
             sudo kubectl delete deployments --all
             sudo kubectl apply -f .
             sudo envsubst < ./prometheus-config.yaml

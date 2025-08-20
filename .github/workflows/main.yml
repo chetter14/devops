@@ -187,7 +187,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             echo "Check if files are copied:"
-            ls -la ~/app_deploy/
+            ls -la ~/app_deploy/kubernetes/configs/
             sleep 3  # Small delay to ensure file writing is complete
 
       - name: Deploy via SSH
@@ -197,7 +197,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd ~/app_deploy
+            cd ~/app_deploy/kubernetes/configs
             sudo kubectl delete deployments --all
             sudo kubectl apply -f .
             sudo kubectl scale deployment frontend --replicas=1

@@ -191,7 +191,7 @@ jobs:
             cd ~/app_deploy/kubernetes/configs
             sudo kubectl delete deployments --all
             sudo kubectl apply -f .
-            sudo envsubst < ./prometheus-config.yaml | kubectl apply -f -
+            sudo envsubst < ./prometheus-config.yaml | sudo kubectl apply -f -
             # Apply Metrics Server
             sudo kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
             sudo kubectl scale deployment frontend --replicas=1

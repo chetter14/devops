@@ -179,6 +179,17 @@ jobs:
           source: "kubernetes/configs/*"
           target: "~/app_deploy"
 
+      - name: Verify files were copied
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.YC_VM_IP }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            echo "Check if files are copied:"
+            ls -la ~/app_deploy/
+            sleep 3  # Small delay to ensure file writing is complete
+
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v0.1.10
         with:

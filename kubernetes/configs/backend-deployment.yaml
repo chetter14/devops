@@ -17,6 +17,8 @@ spec:
   template:
     metadata:
       annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
         kompose.cmd: /snap/kompose/19/kompose-linux-amd64 convert -f docker-compose.yml
         kompose.version: 1.21.0 (992df58d8)
       creationTimestamp: null

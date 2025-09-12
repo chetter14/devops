@@ -62,6 +62,9 @@ sudo watch -n 1 \
 kubectl get pods
 kubectl get hpa'
 
+# Show the token in prometheus config
+sudo kubectl exec -it prometheus-55d7777458-lkvxm -- printenv YC_PROM_KEY
+
 # ----- SET UP METRICS SERVER AND HORIZONTAL SCALING:
 
 # Edit `Deployment` with requests and limits and reapply it

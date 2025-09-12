@@ -19,7 +19,7 @@ data:
           action: replace
           target_label: __address__
           regex: (.+)
-          replacement: $1:8080  # or whatever port your Spring Boot pod exposes
+          replacement: $1:8080
     remote_write:
       - url: 'https://monitoring.api.cloud.yandex.net/prometheus/workspaces/mon4qajkk17258krfi6g/api/v1/write'
         bearer_token: "${YC_PROM_KEY}"

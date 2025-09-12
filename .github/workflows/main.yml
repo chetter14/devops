@@ -187,6 +187,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd ~/app_deploy/kubernetes/configs
+            kubectl delete secret yc-prometheus-token
             sudo kubectl create secret generic yc-prometheus-token \
                 --from-literal=token="${{ secrets.YC_PROM_KEY }}" \
                 --namespace=default

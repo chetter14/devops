@@ -14,6 +14,7 @@ spec:
       labels:
         io.kompose.service: prometheus
     spec:
+      serviceAccountName: prometheus
       containers:
       - name: prometheus
         image: prom/prometheus:latest
@@ -23,6 +24,12 @@ spec:
         - name: prometheus-config-volume
           mountPath: /etc/prometheus/prometheus.yml
           subPath: prometheus.yml
+        env:
+        - name: YC_PROM_KEY
+          valueFrom:
+            secretKeyRef:
+              name: yc-prometheus-token
+              key: token 
       volumes:
       - name: prometheus-config-volume
         configMap:

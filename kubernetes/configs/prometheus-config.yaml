@@ -12,13 +12,13 @@ data:
         metrics_path: /actuator/prometheus
         kubernetes_sd_configs:
         - role: pod
-          selectors:
-          - role: pod
-            label: "io.kompose.service=backend"
         relabel_configs:
-          - source_labels: [__meta_kubernetes_pod_label_io_kompose_service]
-            action: keep
-            regex: backend
+        - source_labels: [__meta_kubernetes_pod_label_app]
+          action: keep
+          regex: backend
+        - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+          action: keep
+          regex: true
 
     remote_write:
       - url: 'https://monitoring.api.cloud.yandex.net/prometheus/workspaces/mon4qajkk17258krfi6g/api/v1/write'

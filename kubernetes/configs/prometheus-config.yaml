@@ -8,17 +8,10 @@ data:
       scrape_interval: 5s
 
     scrape_configs:
-      - job_name: "backend"
+      - job_name: "kubernetes-pods"
         metrics_path: /actuator/prometheus
         kubernetes_sd_configs:
         - role: pod
-        relabel_configs:
-        - source_labels: [__meta_kubernetes_pod_label_io_kompose_service]
-          action: keep
-          regex: backend
-        - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
-          action: keep
-          regex: true
 
     remote_write:
       - url: 'https://monitoring.api.cloud.yandex.net/prometheus/workspaces/mon4qajkk17258krfi6g/api/v1/write'

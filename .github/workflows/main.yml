@@ -187,12 +187,10 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd ~/app_deploy/kubernetes/configs
-            sudo kubectl delete secret yc-prometheus-token
-            sudo kubectl create secret generic yc-prometheus-token \
-                --from-literal=token="${{ secrets.YC_PROM_KEY }}" \
-                --namespace=default
+            export YC_PROM_KEY="${{ secrets.YC_PROM_KEY }}"
             sudo kubectl delete deployments --all
             sudo kubectl apply -f .
+            sudo -E envsubst < ./prometheus-config.yaml | sudo kubectl apply -f -
             sudo kubectl rollout restart deployment prometheus
             # Apply Metrics Server
             sudo kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml

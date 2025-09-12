@@ -13,7 +13,7 @@ data:
         kubernetes_sd_configs:
         - role: pod
         relabel_configs:
-        - source_labels: [__meta_kubernetes_pod_label_app]
+        - source_labels: [__meta_kubernetes_pod_label_io_kompose_service]
           action: keep
           regex: backend
         - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]

@@ -39,7 +39,7 @@ public class MyTelegramBot extends TelegramLongPollingBot {
         try {
             execute(message);
         } catch (TelegramApiException e) {
-            e.printStackTrace();
+            System.out.println("Error! Failed to send message to tg bot:\n" + e.getMessage());
         }
     }
 }

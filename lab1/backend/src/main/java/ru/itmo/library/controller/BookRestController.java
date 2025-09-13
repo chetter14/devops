@@ -30,6 +30,8 @@ public class BookRestController {
     private Counter books_requests_all, books_requests_by_id, books_requests_create,
             books_requests_update, books_requests_delete;
 
+    private DateTimeFormatter formatter;
+
     @PostConstruct
     public void init() {
         String podName = System.getenv("POD_NAME");
@@ -58,6 +60,8 @@ public class BookRestController {
                 .tag("operation", "delete")
                 .description("Total requests to delete a book")
                 .register(registry);
+
+        this.formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     }
 
     public BookRestController(BookService bookService, MyTelegramBot telegramBot) {
@@ -71,12 +75,11 @@ public class BookRestController {
         books_requests_all.increment();
 
         LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String podName = System.getenv("POD_NAME");
 
-        telegramBot.sendMessage("Time: " + now.format(formatter) + "\n" +
+        telegramBot.sendMessage("Time: " + now.format(this.formatter) + "\n" +
                 "Pod: " + podName + "\n" +
-                "Message: GET /api/books is called");
+                "Message: GET /api/books is handled");
 
         return bookService.getBooks();
     }
@@ -85,6 +88,14 @@ public class BookRestController {
     @GetMapping("/{id}")
     public Book getBookById(@PathVariable Long id) {
         books_requests_by_id.increment();
+
+        LocalDateTime now = LocalDateTime.now();
+        String podName = System.getenv("POD_NAME");
+
+        telegramBot.sendMessage("Time: " + now.format(this.formatter) + "\n" +
+                "Pod: " + podName + "\n" +
+                "Message: GET /api/books/" + id + " is called");
+
         return bookService.getBookById(id);
     }
 
@@ -92,6 +103,14 @@ public class BookRestController {
     @PostMapping
     public Book createBook(@RequestBody @Valid Book book) {
         books_requests_create.increment();
+
+        LocalDateTime now = LocalDateTime.now();
+        String podName = System.getenv("POD_NAME");
+
+        telegramBot.sendMessage("Time: " + now.format(this.formatter) + "\n" +
+                "Pod: " + podName + "\n" +
+                "Message: POST /api/books/ is called");
+
         return bookService.add(book);
     }
 
@@ -100,6 +119,14 @@ public class BookRestController {
     public Book updateBook(@PathVariable Long id, @RequestBody @Valid Book book) {
         books_requests_update.increment();
         book.setId(id);
+
+        LocalDateTime now = LocalDateTime.now();
+        String podName = System.getenv("POD_NAME");
+
+        telegramBot.sendMessage("Time: " + now.format(this.formatter) + "\n" +
+                "Pod: " + podName + "\n" +
+                "Message: PUT /api/books/" + id + " is called");
+
         return bookService.update(book);
     }
 
@@ -108,6 +135,14 @@ public class BookRestController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteBook(@PathVariable Long id) {
         books_requests_delete.increment();
+
+        LocalDateTime now = LocalDateTime.now();
+        String podName = System.getenv("POD_NAME");
+
+        telegramBot.sendMessage("Time: " + now.format(this.formatter) + "\n" +
+                "Pod: " + podName + "\n" +
+                "Message: DELETE /api/books/" + id + " is called");
+
         bookService.delete(id);
     }
 }

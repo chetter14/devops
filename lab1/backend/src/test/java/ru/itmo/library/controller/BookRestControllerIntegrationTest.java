@@ -5,12 +5,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import ru.itmo.library.model.Book;
 import ru.itmo.library.repository.BookRepository;
+import ru.itmo.library.tgbot.MyTelegramBot;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -30,6 +32,9 @@ public class BookRestControllerIntegrationTest {
 
     @Autowired
     private WebApplicationContext webApplicationContext;
+
+    @MockBean
+    private MyTelegramBot telegramBot;
 
     @BeforeEach
     public void setup() {

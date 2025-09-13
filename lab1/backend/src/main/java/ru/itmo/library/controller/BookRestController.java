@@ -11,6 +11,7 @@ import ru.itmo.library.repository.BookRepository;
 import ru.itmo.library.service.BookService;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
+import ru.itmo.library.tgbot.MyTelegramBot;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ import java.util.List;
 public class BookRestController {
 
     private final BookService bookService;
+    private final MyTelegramBot telegramBot;
 
     @Autowired
     private MeterRegistry registry;
@@ -56,14 +58,18 @@ public class BookRestController {
                 .register(registry);
     }
 
-    public BookRestController(BookService bookService) {
+    public BookRestController(BookService bookService, MyTelegramBot telegramBot) {
         this.bookService = bookService;
+        this.telegramBot = telegramBot;
     }
 
     @Timed(value = "books_get_all_duration", description = "Time taken to get all books")
     @GetMapping
     public List<Book> getBooks() {
         books_requests_all.increment();
+
+        telegramBot.sendMessage("Someone called GET /api/books");
+
         return bookService.getBooks();
     }
 

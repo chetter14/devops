@@ -188,6 +188,16 @@ jobs:
           script: |
             cd ~/app_deploy/kubernetes/configs
             export YC_PROM_KEY="${{ secrets.YC_PROM_KEY }}"
+            export TELEGRAM_BOT_TOKEN="${{ secrets.TELEGRAM_BOT_TOKEN }}"
+            export TELEGRAM_BOT_USERNAME="${{ secrets.TELEGRAM_BOT_USERNAME }}"
+            export TELEGRAM_CHAT_ID="${{ secrets.TELEGRAM_CHAT_ID }}"
+            
+            kubectl delete secret telegram-bot-secrets --ignore-not-found
+            kubectl create secret generic telegram-bot-secrets \
+              --from-literal=TELEGRAM_BOT_TOKEN=$TELEGRAM_BOT_TOKEN \
+              --from-literal=TELEGRAM_BOT_USERNAME=$TELEGRAM_BOT_USERNAME \
+              --from-literal=TELEGRAM_CHAT_ID=$TELEGRAM_CHAT_ID
+            
             sudo kubectl delete deployments --all
             sudo kubectl apply -f .
             sudo -E envsubst < ./prometheus-config.yaml | sudo kubectl apply -f -

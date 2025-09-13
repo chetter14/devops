@@ -194,9 +194,9 @@ jobs:
             
             sudo kubectl delete secret telegram-bot-secrets --ignore-not-found
             sudo kubectl create secret generic telegram-bot-secrets \
-              --from-literal=TELEGRAM_BOT_TOKEN=$TELEGRAM_BOT_TOKEN \
-              --from-literal=TELEGRAM_BOT_USERNAME=$TELEGRAM_BOT_USERNAME \
-              --from-literal=TELEGRAM_CHAT_ID=$TELEGRAM_CHAT_ID
+              --from-literal=TELEGRAM_BOT_TOKEN="$TELEGRAM_BOT_TOKEN" \
+              --from-literal=TELEGRAM_BOT_USERNAME="$TELEGRAM_BOT_USERNAME" \
+              --from-literal=TELEGRAM_CHAT_ID="$TELEGRAM_CHAT_ID"
             
             sudo kubectl delete deployments --all
             sudo kubectl apply -f .

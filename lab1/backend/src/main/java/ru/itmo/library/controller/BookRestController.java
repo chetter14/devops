@@ -13,6 +13,8 @@ import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 import ru.itmo.library.tgbot.MyTelegramBot;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -68,7 +70,13 @@ public class BookRestController {
     public List<Book> getBooks() {
         books_requests_all.increment();
 
-        telegramBot.sendMessage("Someone called GET /api/books");
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String podName = System.getenv("POD_NAME");
+
+        telegramBot.sendMessage("Time: " + now.format(formatter) + "\n" +
+                "Pod: " + podName + "\n" +
+                "Message: GET /api/books is called");
 
         return bookService.getBooks();
     }
